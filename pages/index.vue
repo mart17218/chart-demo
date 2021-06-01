@@ -1,16 +1,13 @@
 <template>
   <div class="container">
     <section>
-      <table>
-        <thead></thead>
-        <tbody>
-          <tr v-for="(data, index) in jsonData" :key="index">
-            <td v-for="(thead, tIndex) in TABLE_HEAD" :key="tIndex">
-              {{ data[thead] }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <q-table
+        class="basic-table"
+        title="COVID-19 台灣疫情報告"
+        :data="data"
+        :columns="columns"
+        row-key="name"
+      />
     </section>
   </div>
 </template>
@@ -21,15 +18,29 @@ export default {
   name: 'index',
   data () {
     return {
-      jsonData
+      jsonData,
+      columns: [
+        {
+          name: 'Treats',
+          required: true,
+          label: '發病年份',
+          align: 'left',
+          field: row => row['發病年份'],
+          format: val => `${val}`,
+          sortable: true
+        },
+        { name: 'calories', align: 'center', label: '發病月份', field: '發病月份', sortable: true },
+        { name: 'fat', label: '縣市', field: '縣市', sortable: true },
+        { name: 'carbs', label: '鄉鎮', field: '鄉鎮' },
+        { name: 'protein', label: '性別', field: '性別' },
+        { name: 'sodium', label: '是否為境外移入', field: '是否為境外移入' },
+        { name: 'calcium', label: '年齡層', field: '年齡層', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
+        { name: 'iron', label: '確定病例數', field: '確定病例數', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+      ],
+      data: jsonData
     }
   },
   computed: {
-    TABLE_HEAD () {
-      const keyName = this.jsonData[0]
-      delete keyName['確定病名']
-      return Object.keys(keyName)
-    }
   }
 }
 </script>
